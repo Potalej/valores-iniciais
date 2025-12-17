@@ -2,13 +2,14 @@
 # Arquivo CMake para o gerador de valores iniciais
 # ============================================================================
 cmake_minimum_required(VERSION 3.15)
-project(valores_iniciais VERSION 0.2.0
+project(valores_iniciais VERSION 0.2.1
         DESCRIPTION "Geracao de valores iniciais"
         LANGUAGES Fortran)
 enable_language(Fortran)
 
 # Para baixar as coisas
 include(FetchContent)
+include(repos.cmake)
 
 # ============================================================================
 # Biblioteca
@@ -42,8 +43,8 @@ if (NOT TARGET utilidades)
   message(STATUS "Biblioteca 'utilidades' nao encontrada! baixando do repositorio...")
   FetchContent_Declare(
     utilidades
-    GIT_REPOSITORY https://github.com/potalej/utilidades.git
-    GIT_TAG main
+    GIT_REPOSITORY ${UTILIDADES_REPO}
+    GIT_TAG ${UTILIDADES_TAG}
   )
   FetchContent_MakeAvailable(utilidades)
 else()
