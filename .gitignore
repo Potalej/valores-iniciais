@@ -1,1 +1,4 @@
-build
+build/
+python/valores_iniciais/*.so
+*.sh
+*.pyc

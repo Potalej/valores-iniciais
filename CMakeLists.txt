@@ -2,7 +2,7 @@
 # Arquivo CMake para o gerador de valores iniciais
 # ============================================================================
 cmake_minimum_required(VERSION 3.15)
-project(valores_iniciais VERSION 0.1.0
+project(valores_iniciais VERSION 0.2.0
         DESCRIPTION "Geracao de valores iniciais"
         LANGUAGES Fortran)
 enable_language(Fortran)

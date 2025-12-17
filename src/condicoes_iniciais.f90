@@ -5,7 +5,7 @@
 !   Funcoes para o condicionamento de valores iniciais.
 ! 
 ! Modificado:
-!   16 de dezembro de 2025
+!   17 de dezembro de 2025
 ! 
 ! Autoria:
 !   oap
@@ -16,6 +16,8 @@ MODULE condicoes_iniciais
   USE condicionamento ! Metodos gerais de restricao
   USE sorteio_mod
   IMPLICIT NONE
+
+  PUBLIC condicionar
 CONTAINS
 
 ! ************************************************************

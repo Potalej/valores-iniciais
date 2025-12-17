@@ -7,7 +7,7 @@
 !   distribuicoes de probabilidade.
 ! 
 ! Modificado:
-!   03 de agosto de 2025
+!   17 de dezembro de 2025
 ! 
 ! Autoria:
 !   oap
@@ -108,14 +108,17 @@ SUBROUTINE uniforme (vetor, N, distmin, vmin, vmax, regiao)
   REAL(pf), INTENT(IN) :: distmin, vmin, vmax
   REAL(pf) :: raio, centro(3)
   REAL(pf) :: u(3), ajuste(3)
-  INTEGER :: i
+  INTEGER :: i, contador
 
   raio = 0.5_pf*(vmax - vmin)
   centro(:) = 0.5_pf*(vmin + vmax)
   ajuste(:) = vmin
   CALL RANDOM_SEED()
   DO i=1, N
+    contador = 0 ! limite de 100 testes
     DO
+      contador = contador + 1
+      IF (contador == 100) STOP "Limite de tentativas de sorteio atingido! Tente aumentar a regiao!"
       ! Sorteia e ajusta no intervalo
       CALL RANDOM_NUMBER(u)
       u = (u * (vmax - vmin) + ajuste)
@@ -159,7 +162,7 @@ SUBROUTINE normal (vetor, N, distmin, regiao, raio, centro)
   REAL(pf) :: x, y, z
   REAL(pf) :: u1, u2, r, theta, max_dist
   REAL(pf) :: PI = 3.14159265358979_pf
-  INTEGER  :: a
+  INTEGER  :: a, contador
 
   CALL RANDOM_SEED()
 
@@ -167,7 +170,10 @@ SUBROUTINE normal (vetor, N, distmin, regiao, raio, centro)
 
   ! transformacao de Box-Muller
   DO a = 1, N
+    contador = 0
     DO
+      contador = contador + 1
+      IF (contador == 100) STOP "Limite de tentativas de sorteio atingido! Tente aumentar a regiao!"
       CALL RANDOM_NUMBER(u1)
       CALL RANDOM_NUMBER(u2)
       r = SQRT(-2.0_pf * LOG(u1))
@@ -218,12 +224,15 @@ SUBROUTINE cauchy (vetor, N, distmin, regiao, raio, centro)
   CHARACTER(LEN=*),INTENT(IN) :: regiao
   REAL(pf), DIMENSION(3)   :: u
   REAL(pf) :: PI = 3.14159265358979_pf
-  INTEGER :: a
+  INTEGER :: a, contador
 
   CALL RANDOM_SEED()
 
   DO a=1, N
+    contador = 0
     DO
+      contador = contador + 1
+      IF (contador == 100) STOP "Limite de tentativas de sorteio atingido! Tente aumentar a regiao!"
       ! Sorteia e ajusta no intervalo
       CALL RANDOM_NUMBER(u)
       u = TAN(PI*u - PI*0.5_pf)

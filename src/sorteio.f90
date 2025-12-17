@@ -5,7 +5,7 @@
 !   Funcoes para a geracao de valores iniciais
 ! 
 ! Modificado:
-!   16 de dezembro de 2025
+!   17 de dezembro de 2025
 ! 
 ! Autoria:
 !   oap
@@ -36,17 +36,14 @@ MODULE sorteio_mod
     ! Modo de sorteio
     CHARACTER(LEN=:), ALLOCATABLE :: modo
 
-    ! Se as massas serao iguais
-    LOGICAL :: massas_iguais = .FALSE.
-
     ! Integrais primeiras desejadas
     REAL(pf) :: ed ! Energia desejada
     REAL(pf) :: jd(3) ! Angular total desejado
     REAL(pf) :: pd(3) ! Linear total desejado
 
-    TYPE(sorteio_vetor), POINTER :: massas
-    TYPE(sorteio_vetor), POINTER :: posicoes
-    TYPE(sorteio_vetor), POINTER :: momentos
+    TYPE(sorteio_vetor) :: massas
+    TYPE(sorteio_vetor) :: posicoes
+    TYPE(sorteio_vetor) :: momentos
 
   END TYPE sorteio
 
@@ -91,7 +88,7 @@ END SUBROUTINE gerar_valores
 !   Gera vetores 3d utilizados para as posicoes e velocidades.
 !
 ! Modificado:
-!   16 de dezembro de 2025
+!   17 de dezembro de 2025
 !
 ! Autoria:
 !   oap
@@ -99,7 +96,7 @@ END SUBROUTINE gerar_valores
 FUNCTION gerar_vetores3d (N, sorteio_infos) RESULT(vetores)
 
   INTEGER, INTENT(IN)         :: N
-  TYPE(sorteio_vetor), POINTER, INTENT(INOUT) :: sorteio_infos
+  TYPE(sorteio_vetor), INTENT(INOUT) :: sorteio_infos
   REAL(pf), DIMENSION(N,3)    :: vetores
   CHARACTER(:), ALLOCATABLE   :: distribuicao, regiao
   REAL(pf), ALLOCATABLE     :: intervalo(:)
@@ -140,7 +137,7 @@ END FUNCTION gerar_vetores3d
 !   Gera vetor de massas conforme um intervalo informado.
 !
 ! Modificado:
-!   16 de dezembro de 2025
+!   17 de dezembro de 2025
 !
 ! Autoria:
 !   oap
@@ -148,7 +145,7 @@ END FUNCTION gerar_vetores3d
 FUNCTION gerar_massas (N, sorteio_infos) RESULT(massas)
 
   INTEGER, INTENT(IN)           :: N
-  TYPE(sorteio_vetor), POINTER     :: sorteio_infos
+  TYPE(sorteio_vetor)           :: sorteio_infos
   REAL(pf), DIMENSION(N)        :: massas
   REAL(pf), ALLOCATABLE         :: intervalo(:)
   CHARACTER(LEN=:), ALLOCATABLE :: distribuicao
@@ -160,10 +157,12 @@ FUNCTION gerar_massas (N, sorteio_infos) RESULT(massas)
   ! 1 - Se a opcao "normalizadas" for TRUE, faz m = 1/N
   IF (sorteio_infos % normalizado) THEN
     massas = 1.0_pf / N
+    WRITE(*,*)
   
   ! 2 - Se nao for normalizada mas forem iguais, determina
   ELSE IF (intervalo(1) == intervalo(2)) THEN
     massas = intervalo(1)
+    WRITE(*,*)
     
   ELSE
     ! AQUI PRECISA APLICAR A DISTRIBUICAO DESEJADA. POR ENQUANTO SO TEM A UNIFORME
