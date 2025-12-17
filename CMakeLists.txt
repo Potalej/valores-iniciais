@@ -2,7 +2,8 @@
 # Arquivo CMake para o gerador de valores iniciais
 # ============================================================================
 cmake_minimum_required(VERSION 3.15)
-project(valores_iniciais VERSION 0.2.1
+project(valores_iniciais 
+        VERSION 0.2.2
         DESCRIPTION "Geracao de valores iniciais"
         LANGUAGES Fortran)
 enable_language(Fortran)
@@ -17,8 +18,9 @@ include(repos.cmake)
 add_library(valores_iniciais STATIC)
 
 set_target_properties(valores_iniciais PROPERTIES
-  Fortran_MODULE_DIRECTORY
-    ${CMAKE_CURRENT_BINARY_DIR}/mod
+  Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod
+  VERSION ${PROJECT_VERSION}
+  SOVERSION ${PROJECT_VERSION_MAJOR}
 )
 
 target_sources(valores_iniciais
