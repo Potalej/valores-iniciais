@@ -10,7 +10,6 @@ enable_language(Fortran)
 
 # Para baixar as coisas
 include(FetchContent)
-include(repos.cmake)
 
 # ============================================================================
 # Biblioteca

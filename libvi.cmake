@@ -22,6 +22,8 @@ target_include_directories(valores_iniciais
 # ============================================================================
 # Dependencia: utilidades
 # ============================================================================
+include(repos.cmake)
+
 if (NOT TARGET utilidades)
   message(STATUS "Biblioteca 'utilidades' nao encontrada! baixando do repositorio...")
   FetchContent_Declare(
