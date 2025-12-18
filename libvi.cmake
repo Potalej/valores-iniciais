@@ -1,5 +1,7 @@
 add_library(valores_iniciais STATIC)
 
+include(${VI_DIR}repos.cmake)
+
 set_target_properties(valores_iniciais PROPERTIES
   Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod
 )
@@ -22,8 +24,6 @@ target_include_directories(valores_iniciais
 # ============================================================================
 # Dependencia: utilidades
 # ============================================================================
-include(repos.cmake)
-
 if (NOT TARGET utilidades)
   message(STATUS "Biblioteca 'utilidades' nao encontrada! baixando do repositorio...")
   FetchContent_Declare(
