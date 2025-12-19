@@ -1,4 +1,4 @@
-add_library(valores_iniciais STATIC)
+add_library(valores_iniciais SHARED)
 
 set_target_properties(valores_iniciais PROPERTIES
   Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod
