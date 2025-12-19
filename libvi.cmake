@@ -22,8 +22,10 @@ target_include_directories(valores_iniciais
 # ============================================================================
 # Dependencia: utilidades
 # ============================================================================
-add_subdirectory(libs/ncorpos_utilidades)
-
-target_link_libraries(valores_iniciais
-  PUBLIC utilidades
-)
+# Se nao for usar uma versao local, inclui
+IF (VI_UTILIDADES_LOCAL)
+  add_subdirectory(libs/ncorpos_utilidades)
+  target_link_libraries(valores_iniciais
+    PUBLIC utilidades
+  )
+ENDIF()
