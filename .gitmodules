@@ -1,0 +1,3 @@
+[submodule "libs/ncorpos_utilidades"]
+	path = libs/ncorpos_utilidades
+	url = https://github.com/potalej/ncorpos-utilidades

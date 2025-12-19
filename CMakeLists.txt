@@ -8,9 +8,6 @@ project(ncorpos_vi
         LANGUAGES Fortran)
 enable_language(Fortran)
 
-# Para baixar as coisas
-include(FetchContent)
-
 # ============================================================================
 # Biblioteca
 # ----------------------------------------------------------------------------
