@@ -12,8 +12,34 @@ set(NCORPOS_VI_PROJECT_VERSION ${PROJECT_VERSION} CACHE INTERNAL "")
 # ============================================================================
 # Biblioteca
 # ----------------------------------------------------------------------------
-if (NOT DEFINED VI_UTILIDADES_LOCAL)
-        set(VI_UTILIDADES_LOCAL ON)
-endif()
 set(VI_CURRENT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-include(libvi.cmake)
+
+add_library(valores_iniciais SHARED)
+
+set_target_properties(valores_iniciais PROPERTIES
+  Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mod
+)
+
+target_sources(valores_iniciais
+  PRIVATE
+    ${VI_DIR}include/tipos.F90
+    ${VI_DIR}src/aleatorio.f90
+    ${VI_DIR}src/condicionamento.f90
+    ${VI_DIR}src/condicoes_iniciais.f90
+    ${VI_DIR}src/sorteio.f90
+)
+
+target_include_directories(valores_iniciais
+  PUBLIC
+    ${CMAKE_CURRENT_BINARY_DIR}/mod
+    ${VI_CURRENT_DIR}/include
+)
+
+# ============================================================================
+# Dependencia: utilidades
+# ============================================================================
+add_subdirectory(libs/ncorpos_utilidades)
+
+target_link_libraries(valores_iniciais
+PUBLIC utilidades
+)
