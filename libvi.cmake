@@ -25,7 +25,8 @@ target_include_directories(valores_iniciais
 # Se nao for usar uma versao local, inclui
 IF (VI_UTILIDADES_LOCAL)
   add_subdirectory(libs/ncorpos_utilidades)
-  target_link_libraries(valores_iniciais
-    PUBLIC utilidades
-  )
 ENDIF()
+# Importa no valores-iniciais
+target_link_libraries(valores_iniciais
+  PRIVATE utilidades
+)
