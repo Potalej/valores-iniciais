@@ -7,10 +7,13 @@ project(ncorpos_vi
         DESCRIPTION "Geracao de valores iniciais"
         LANGUAGES Fortran)
 enable_language(Fortran)
+set(NCORPOS_VI_PROJECT_VERSION ${PROJECT_VERSION} CACHE INTERNAL "")
 
 # ============================================================================
 # Biblioteca
 # ----------------------------------------------------------------------------
-set(VI_UTILIDADES_LOCAL ON)
+if (NOT EXISTS "${VI_UTILIDADES_LOCAL}")
+        set(VI_UTILIDADES_LOCAL ON)
+endif()
 set(VI_CURRENT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 include(libvi.cmake)
