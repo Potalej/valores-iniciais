@@ -11,6 +11,7 @@
 !   oap
 ! 
 MODULE condicionamento
+  USE iso_fortran_env, only: output_unit
   USE tipos
   USE utilidades
   USE sorteio_mod
@@ -505,9 +506,9 @@ SUBROUTINE condicionar_ip_iterativo (G, massas, posicoes, momentos, eps, H, mat,
     END DO
   END IF
 
-  WRITE (*,*)
-  WRITE (*,*) ' > condicionamento iterativo aplicado ', i, ' vezes para obter o erro ', erro_1
-  WRITE (*,*)
+  WRITE (output_unit,*)
+  WRITE (output_unit,*) ' > condicionamento iterativo aplicado ', i, ' vezes para obter o erro ', erro_1
+  WRITE (output_unit,*)
 END SUBROUTINE condicionar_ip_iterativo
 
 ! ************************************************************
@@ -544,7 +545,7 @@ SUBROUTINE condicionar_ip_direto (G, massas, posicoes, momentos, soft, H, J, P)
   IF (PRESENT(soft)) eps = soft
 
   IF (eps .NE. 0) THEN
-    WRITE (*,*) ' [ATENCAO] potencial amortecido, o cond. direto nao sera exato!'
+    WRITE (output_unit,*) ' [ATENCAO] potencial amortecido, o cond. direto nao sera exato!'
   END IF
 
   ! Zera o centro de massas
@@ -588,11 +589,11 @@ SUBROUTINE condicionar_ip_direto (G, massas, posicoes, momentos, soft, H, J, P)
   S2 = (0.5_pf * M_tot_inv * NORM2(pd)**2 - 0.5_pf*alpha*alpha*DOT_PRODUCT(jd, rot_))
   beta = SQRT((ed - alpha * potencial - S2)/S1)
 
-  WRITE (*,*) '   > coeficientes:'
-  WRITE (*,*) '     * alpha =', alpha
-  WRITE (*,*) '     * beta  =', beta
-  WRITE (*,*) '     * S1    =', S1
-  WRITE (*,*) '     * S2    =', S2
+  WRITE (output_unit,*) '   > coeficientes:'
+  WRITE (output_unit,*) '     * alpha =', alpha
+  WRITE (output_unit,*) '     * beta  =', beta
+  WRITE (output_unit,*) '     * S1    =', S1
+  WRITE (output_unit,*) '     * S2    =', S2
 
   IF (alpha == 0.0 .OR. beta == 0.0) THEN
     ERROR STOP "ERRO: um dos coeficientes alpha ou beta eh nulo."
@@ -642,8 +643,8 @@ SUBROUTINE condicionar_aarseth (G, massas, posicoes, momentos, eps)
 
   ! Aviso para caso haja amortecedor
   IF (eps .NE. 0) THEN
-    WRITE (*,*) ' [ATENCAO] potencial amortecido, nao havera equilibrio inicial!'
-    WRITE (*,*) '           para equilibrio, use o "sorteio_aarseth_modificado".'
+    WRITE (output_unit,*) ' [ATENCAO] potencial amortecido, nao havera equilibrio inicial!'
+    WRITE (output_unit,*) '           para equilibrio, use o "sorteio_aarseth_modificado".'
   END IF
   
   ! Normaliza as massas

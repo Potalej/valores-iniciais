@@ -11,6 +11,7 @@
 !   oap
 ! 
 MODULE condicoes_iniciais
+  use iso_fortran_env, only: output_unit
   USE tipos
   USE utilidades
   USE condicionamento ! Metodos gerais de restricao
@@ -44,10 +45,10 @@ SUBROUTINE condicionar (sorteio_infos, massas, posicoes, momentos)
   G = sorteio_infos % G
   eps = sorteio_infos % amortecedor
 
-  WRITE(*,'(a)') "GERACAO DAS VALORES INICIAIS ("//sorteio_infos % modo//")"
+  WRITE (output_unit,'(a)') "GERACAO DOS VALORES INICIAIS ("//sorteio_infos % modo//")"
 
   ! Sorteio dos valores na regiao e com distribuicao desejadas
-  WRITE(*,'(a)') "  > gerando valores..."
+  WRITE (output_unit,'(a)') "  > gerando valores..."
   ALLOCATE(massas(N))
   ALLOCATE(posicoes(N,3))
   ALLOCATE(momentos(N,3))
@@ -59,8 +60,8 @@ SUBROUTINE condicionar (sorteio_infos, massas, posicoes, momentos)
   jd = sorteio_infos % pd
 
   ! Agora faz o condicionamento de acordo com o metodo desejado
-  WRITE(*,*) ""
-  WRITE(*,'(a)') "  > condicionando..."
+  WRITE (output_unit,*) ""
+  WRITE (output_unit,'(a)') "  > condicionando..."
   
   SELECT CASE (TRIM(sorteio_infos % modo))
     ! Sem nenhum condicionamento
@@ -129,19 +130,20 @@ SUBROUTINE condicionamento_outputs (G, massas, posicoes, momentos, eps)
     IF (dist > mais_distante) mais_distante = dist
   END DO
 
-  WRITE(*,*) ""
-  WRITE(*,'(a)') "  > valores iniciais condicionados!"
-  WRITE(*,*) "     * V   = ", potencial
-  WRITE(*,*) "     * T   = ", cinetica
-  WRITE(*,*) "     * E   = ", potencial + cinetica
-  WRITE(*,*) "     * Vir = ", virial
-  WRITE(*,*) "     * J   = ", angtot
-  WRITE(*,*) "     * P   = ", lintot
-  WRITE(*,*) "     * I   = ", inercia
-  WRITE(*,*) "     * D   = ", dilatacao
-  WRITE(*,*) "     * A_I = ", anitenine
-  WRITE(*,*) "     * MD  = ", mais_distante
+  WRITE (output_unit,*) ""
+  WRITE (output_unit,'(a)') "  > valores iniciais condicionados!"
+  WRITE (output_unit,*) "     * V   = ", potencial
+  WRITE (output_unit,*) "     * T   = ", cinetica
+  WRITE (output_unit,*) "     * E   = ", potencial + cinetica
+  WRITE (output_unit,*) "     * Vir = ", virial
+  WRITE (output_unit,*) "     * J   = ", angtot
+  WRITE (output_unit,*) "     * P   = ", lintot
+  WRITE (output_unit,*) "     * I   = ", inercia
+  WRITE (output_unit,*) "     * D   = ", dilatacao
+  WRITE (output_unit,*) "     * A_I = ", anitenine
+  WRITE (output_unit,*) "     * MD  = ", mais_distante
 
+  CALL FLUSH(OUTPUT_UNIT)
 END SUBROUTINE
 
 END MODULE condicoes_iniciais
