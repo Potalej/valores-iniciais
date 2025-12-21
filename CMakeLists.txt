@@ -38,7 +38,12 @@ target_include_directories(valores_iniciais
 # ============================================================================
 # Dependencia: utilidades
 # ============================================================================
-add_subdirectory(libs/ncorpos_utilidades)
+if (NOT TARGET utilidades)
+  message(STATUS "Usando biblioteca ncorpos-utilidades propria.")
+  add_subdirectory(libs/ncorpos_utilidades)
+else()
+  message(STATUS "Usando biblioteca ncorpos-utilidades do programa.")
+endif()
 
 target_link_libraries(valores_iniciais
 PUBLIC utilidades
