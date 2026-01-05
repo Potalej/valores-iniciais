@@ -18,18 +18,78 @@ MODULE condicoes_iniciais
   USE sorteio_mod
   IMPLICIT NONE
 
-  PUBLIC condicionar
+  PUBLIC gerar_condicionar, gerar, condicionar
 CONTAINS
+
+! ************************************************************
+!! Geracao de valores iniciais e condicionamento
+!
+! Objetivos:
+!   Subrotina que sorteia valores iniciais e os condiciona.
+!
+! Modificado:
+!   05 de janeiro de 2026
+!
+! Autoria:
+!   oap
+!
+SUBROUTINE gerar_condicionar (sorteio_infos, massas, posicoes, momentos)
+  TYPE(sorteio), POINTER, INTENT(INOUT) :: sorteio_infos
+  REAL(pf), INTENT(INOUT), ALLOCATABLE  :: massas(:), posicoes(:,:), momentos(:,:)
+
+  WRITE (output_unit,'(a)') "GERACAO DOS VALORES INICIAIS ("//sorteio_infos % modo//")"
+
+  ! Gera
+  CALL gerar(sorteio_infos, massas, posicoes, momentos)
+
+  ! Condiciona
+  CALL condicionar(sorteio_infos, massas, posicoes, momentos)
+
+END SUBROUTINE gerar_condicionar
+
+! ************************************************************
+!! Geracao de valores iniciais
+!
+! Objetivos:
+!   Subrotina que sorteia valores iniciais. Esta nao faz o
+!   condicionamento.
+!
+! Modificado:
+!   05 de janeiro de 2026
+!
+! Autoria:
+!   oap
+!
+SUBROUTINE gerar (sorteio_infos, massas, posicoes, momentos)
+  TYPE(sorteio), POINTER, INTENT(INOUT) :: sorteio_infos
+  REAL(pf), INTENT(INOUT), ALLOCATABLE  :: massas(:), posicoes(:,:), momentos(:,:)
+  INTEGER                               :: N
+  REAL(pf)                              :: G, eps, ed
+
+  N   = sorteio_infos % N
+  G   = sorteio_infos % G
+  eps = sorteio_infos % amortecedor
+
+  WRITE (output_unit,'(a)') "  > gerando valores..."
+  
+  ALLOCATE(massas(N))
+  ALLOCATE(posicoes(N,3))
+  ALLOCATE(momentos(N,3))
+
+  ! Sorteio
+  CALL gerar_valores(N, sorteio_infos, massas, posicoes, momentos)
+
+END SUBROUTINE
 
 ! ************************************************************
 !! Condicionamento geral
 !
 ! Objetivos:
-!   Subrotina geral para condicionamento. Todas as outras sao
-!   chamadas a partir desta.
+!   Subrotina geral para condicionamento. Todas as outras 
+!   rotinas de condicionamento sao chamadas a partir desta.
 !
 ! Modificado:
-!   16 de dezembro de 2025
+!   05 de janeiro de 2026
 !
 ! Autoria:
 !   oap
@@ -37,22 +97,11 @@ CONTAINS
 SUBROUTINE condicionar (sorteio_infos, massas, posicoes, momentos)
   TYPE(sorteio), POINTER, INTENT(INOUT) :: sorteio_infos
   REAL(pf), INTENT(INOUT), ALLOCATABLE  :: massas(:), posicoes(:,:), momentos(:,:) ! out
-  INTEGER  :: N
-  REAL(pf) :: G, eps, ed
-  REAL(pf), DIMENSION(:), ALLOCATABLE :: pd, jd
+  REAL(pf)                              :: G, eps, ed
+  REAL(pf), DIMENSION(:), ALLOCATABLE   :: pd, jd
 
-  N = sorteio_infos % N
-  G = sorteio_infos % G
+  G   = sorteio_infos % G
   eps = sorteio_infos % amortecedor
-
-  WRITE (output_unit,'(a)') "GERACAO DOS VALORES INICIAIS ("//sorteio_infos % modo//")"
-
-  ! Sorteio dos valores na regiao e com distribuicao desejadas
-  WRITE (output_unit,'(a)') "  > gerando valores..."
-  ALLOCATE(massas(N))
-  ALLOCATE(posicoes(N,3))
-  ALLOCATE(momentos(N,3))
-  CALL gerar_valores(N, sorteio_infos, massas, posicoes, momentos)
 
   ! Captura as integrais primeiras
   ed = sorteio_infos % ed
